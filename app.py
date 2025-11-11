@@ -4,7 +4,7 @@ import sys
 import streamlit as st
 from openai import OpenAI
 from infer_utils import extract_sections, generate_correction, export_pdf
-
+from dotenv import load_dotenv
 import openai, sys, os
 print("openai version:", openai.__version__)
 print("python path:", sys.executable)
@@ -12,18 +12,18 @@ print("api key prefix:", os.getenv("OPENAI_API_KEY")[:20])
 
 
 # ✅ 1. 직접 API 키 지정
-OPENAI_API_KEY = ""
-os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+load_dotenv()
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 
 # ✅ 2. OpenAI 클라이언트 생성
-client = OpenAI(api_key=OPENAI_API_KEY)
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # 페이지 설정
 st.set_page_config(page_title="이의신청서 교정 모델", page_icon="📄")
 
 st.title("📄 국민건강보험공단 이의신청서 교정 모델")
 st.write("못 쓴 이의신청서를 업로드하면 GPT가 자동으로 문체와 논리를 교정해줍니다.")
-st.write(f"✅ Using API key: {OPENAI_API_KEY[:20]}...")
+st.write(f"✅ Using API key: {os.getenv('OPENAI_API_KEY')[:20]}...")
 
 # ✅ 3. 사용 가능한 모델 목록 불러오기
 try:
